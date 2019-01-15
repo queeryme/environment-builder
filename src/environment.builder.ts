@@ -1,10 +1,8 @@
 import { Builder, BuilderConfiguration, BuilderContext, BuildEvent } from '@angular-devkit/architect';
 import { getSystemPath } from '@angular-devkit/core';
-import { writeFile } from 'fs';
-import { bindNodeCallback, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import * as ts from 'typescript';
-import { CompilerOptions, Diagnostic, ModuleResolutionKind, ModuleKind, ScriptTarget } from 'typescript';
+import { CompilerOptions, Diagnostic, ModuleKind, ModuleResolutionKind, ScriptTarget } from 'typescript';
 import { IEnvironmentSchema } from './schema';
 
 // noinspection JSUnusedGlobalSymbols
@@ -57,7 +55,7 @@ export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
      * @param fileNames
      * @param options
      */
-    compile(fileNames: string[], options: CompilerOptions): void {
+    private compile(fileNames: string[], options: CompilerOptions): void {
         const program = ts.createProgram(fileNames, options);
         const emitResult = program.emit();
 
