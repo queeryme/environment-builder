@@ -1,9 +1,9 @@
 {
     "$schema": "@angular-devkit/architect/src/builders-schema.json",
     "builders": {
-        "builder-name": {
-            "class": "./src/environment.builder.js",
-            "schema": "./src/schema.json",
+        "file": {
+            "class": "./environment.builder.js",
+            "schema": "./schema.json",
             "description": "Environment Builder"
         }
     }
