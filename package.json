@@ -1,0 +1,11 @@
+{
+  "name": "@flatxph/environment",
+  "version": "0.0.5",
+  "repository": "git@github.com:queeryme/environment-builder.git",
+  "author": "Rodney Pantonial <rodney.pantonial@gmail.com>",
+  "license": "MIT",
+  "keywords": ["angular", "typescript", "builder", "node"],
+  "engines": {
+    "node": ">=8.9"
+  }
+}
