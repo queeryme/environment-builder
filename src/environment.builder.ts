@@ -1,9 +1,9 @@
 import { Builder, BuilderConfiguration, BuilderContext, BuildEvent } from '@angular-devkit/architect';
+import { getSystemPath } from '@angular-devkit/core';
+import { writeFile } from 'fs';
 import { bindNodeCallback, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { IEnvironmentSchema } from './schema';
-import { writeFile } from 'fs';
-import { getSystemPath } from '@angular-devkit/core';
 
 // noinspection JSUnusedGlobalSymbols
 export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
