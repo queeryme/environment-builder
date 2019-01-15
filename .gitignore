@@ -157,3 +157,5 @@ out/**
 ssl/
 /.cache-loader
 /angular_material_schematics-*
+src/*.js
+src/*.d.ts
