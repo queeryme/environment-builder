@@ -4,8 +4,16 @@
   "repository": "git@github.com:queeryme/environment-builder.git",
   "author": "Rodney Pantonial <rodney.pantonial@gmail.com>",
   "license": "MIT",
-  "keywords": ["angular", "typescript", "builder", "node"],
+  "keywords": [
+    "angular",
+    "typescript",
+    "builder",
+    "node"
+  ],
   "engines": {
     "node": ">=8.9"
+  },
+  "devDependencies": {
+    "typescript": "^3.2.2"
   }
 }
