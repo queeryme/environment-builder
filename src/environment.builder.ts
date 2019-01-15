@@ -8,8 +8,7 @@ import { IEnvironmentSchema } from './schema';
 // noinspection JSUnusedGlobalSymbols
 export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
     // noinspection JSUnusedGlobalSymbols
-    constructor(private context: BuilderContext) {
-    }
+    constructor(private context: BuilderContext) {}
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
@@ -59,29 +58,16 @@ export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
         const program = ts.createProgram(fileNames, options);
         const emitResult = program.emit();
 
-        const allDiagnostics = ts
-            .getPreEmitDiagnostics(program)
-            .concat(emitResult.diagnostics);
+        const allDiagnostics = ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics);
 
         allDiagnostics.forEach((diagnostic: Diagnostic) => {
             if (diagnostic.file) {
-                const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(
-                    diagnostic.start!,
-                );
-                const message = ts.flattenDiagnosticMessageText(
-                    diagnostic.messageText,
-                    '\n',
-                );
-                console.log(
-                    `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`,
-                );
+                const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
+                const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
+                console.log(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
             } else {
-                console.log(
-                    `${ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')}`,
-                );
+                console.log(`${ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')}`);
             }
         });
-
     }
-
 }
