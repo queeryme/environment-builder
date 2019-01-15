@@ -34,7 +34,8 @@
         "postversion": "git push && git push --tags"
     },
     "peerDependencies": {
-        "@angular-devkit/build-angular": ">=0.12.1"
+        "@angular-devkit/build-angular": ">=0.12.1",
+        "dotenv": "^6.2.0"
     },
     "builders": "./src/builders.json",
     "files": [

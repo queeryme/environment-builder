@@ -7,35 +7,36 @@ import { IEnvironmentSchema } from './schema';
 
 // noinspection JSUnusedGlobalSymbols
 export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
+
+    private readonly compilerOptions: CompilerOptions = {
+        moduleResolution: ModuleResolutionKind.NodeJs,
+        module: ModuleKind.CommonJS,
+        target: ScriptTarget.ESNext,
+        strict: true,
+        allowSyntheticDefaultImports: true,
+        suppressImplicitAnyIndexErrors: true,
+        forceConsistentCasingInFileNames: true,
+        strictPropertyInitialization: false,
+        strictNullChecks: false,
+        pretty: true,
+        sourceMap: true,
+        declaration: true,
+        stripInternal: true,
+        skipLibCheck: true,
+        declarationDir: 'typings',
+    };
+
     // noinspection JSUnusedGlobalSymbols
     constructor(private context: BuilderContext) {}
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
         const { src } = builderConfig.options as IEnvironmentSchema;
-        const timestampFileName = `${getSystemPath(root)}/${src}`;
+        const srcFile = `${getSystemPath(root)}/${src}.ts`;
+        this.compile([srcFile], this.compilerOptions);
 
-        // TODO: use ts.convertCompilerOptionsFromJson() to convert from a JSON file to the correct format.
-        const compilerOptions: CompilerOptions = {
-            moduleResolution: ModuleResolutionKind.NodeJs,
-            module: ModuleKind.CommonJS,
-            target: ScriptTarget.ESNext,
-            strict: true,
-            allowSyntheticDefaultImports: true,
-            suppressImplicitAnyIndexErrors: true,
-            forceConsistentCasingInFileNames: true,
-            strictPropertyInitialization: false,
-            strictNullChecks: false,
-            pretty: true,
-            sourceMap: true,
-            declaration: true,
-            stripInternal: true,
-            skipLibCheck: true,
-            declarationDir: 'typings',
-        };
-        this.compile([src], compilerOptions);
-
-        // require(`${getSystemPath(root)}/${src}`);
+        const srcModule = `${getSystemPath(root)}/${src}`;
+        const srcRequired = require(srcModule);
 
         // const writeFileObservable = bindNodeCallback(writeFile);
         // return writeFileObservable(timestampFileName, 'Hello world!').pipe(
