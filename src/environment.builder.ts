@@ -8,8 +8,7 @@ import { IEnvironmentSchema } from './schema';
 // noinspection JSUnusedGlobalSymbols
 export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
     // noinspection JSUnusedGlobalSymbols
-    constructor(private context: BuilderContext) {
-    }
+    constructor(private context: BuilderContext) {}
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
