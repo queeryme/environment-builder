@@ -3,10 +3,9 @@ import { Observable, of } from 'rxjs';
 import { IEnvironmentSchema } from './schema';
 
 export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
-    constructor(private context: BuilderContext) {
-    }
+    constructor(private context: BuilderContext) {}
 
-    run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
+    public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         return of({ success: true });
     }
 }

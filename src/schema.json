@@ -1,2 +1,12 @@
 {
+    "id": "EnvironmentBuilderSchema",
+    "title": "Environment builder",
+    "description": "Builder for Environment",
+    "properties": {
+        "src": {
+            "type": "string",
+            "description": "Module to use to generate the environment variable",
+            "default": "src/environments/environment.build"
+        }
+    }
 }
