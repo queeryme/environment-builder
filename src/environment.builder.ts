@@ -1,11 +1,28 @@
 import { Builder, BuilderConfiguration, BuilderContext, BuildEvent } from '@angular-devkit/architect';
-import { Observable, of } from 'rxjs';
+import { bindNodeCallback, Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { IEnvironmentSchema } from './schema';
+import { writeFile } from 'fs';
+import { getSystemPath } from '@angular-devkit/core';
 
+// noinspection JSUnusedGlobalSymbols
 export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
-    constructor(private context: BuilderContext) {}
+    // noinspection JSUnusedGlobalSymbols
+    constructor(private context: BuilderContext) {
+    }
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
-        return of({ success: true });
+        const root = this.context.workspace.root;
+        const { src } = builderConfig.options;
+        const timestampFileName = `${getSystemPath(root)}/${src}`;
+        const writeFileObservable = bindNodeCallback(writeFile);
+        return writeFileObservable(timestampFileName, 'Hello world!').pipe(
+            map(() => ({ success: true })),
+            tap(() => this.context.logger.info('Hello world created')),
+            catchError(e => {
+                this.context.logger.error('Failed to create hello world', e);
+                return of({ success: false });
+            }),
+        );
     }
 }
