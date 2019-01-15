@@ -7,7 +7,6 @@ import { IEnvironmentSchema } from './schema';
 
 // noinspection JSUnusedGlobalSymbols
 export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
-
     private readonly compilerOptions: CompilerOptions = {
         moduleResolution: ModuleResolutionKind.NodeJs,
         module: ModuleKind.CommonJS,
