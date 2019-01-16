@@ -42,7 +42,8 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
     };
 
     // noinspection JSUnusedGlobalSymbols
-    constructor(private context: BuilderContext) {}
+    constructor(private context: BuilderContext) {
+    }
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
@@ -56,13 +57,14 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         const environment = EnvironmentBuilder.load(srcModule);
 
         const options = {
-            quote: "'",
+            quote: '\'',
             space: 4,
         };
         const outputJson = json5.stringify(environment, options);
         const data = { model, modelPath, environment: outputJson };
-        const renderPromise = ejs.renderFile('./src/environment.ts.ejs', data, (error, str) => {
-            console.log('Value is', str);
+        const renderPromise = ejs.renderFile('src/environment.ts.ejs', data, (error, str) => {
+            console.log('Error is', error);
+            console.log('Str is', str);
         });
 
         // const writeFileObservable = bindNodeCallback(writeFile);

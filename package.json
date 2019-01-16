@@ -37,7 +37,8 @@
         "prepublishOnly": "yarn run lint",
         "preversion": "yarn run lint",
         "version": "yarn run format && git add -A src",
-        "postversion": "git push && git push --tags"
+        "postversion": "git push && git push --tags",
+        "public": "yarn publish --access public"
     },
     "peerDependencies": {
         "@angular-devkit/build-angular": ">=0.12.1",
@@ -47,6 +48,7 @@
     "files": [
         "/**/src/*.js",
         "/**/src/*.d.ts",
-        "/**/src/*.json"
+        "/**/src/*.json",
+        "/**/src/*.ts.ejs"
     ]
 }
