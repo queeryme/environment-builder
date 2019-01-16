@@ -7,6 +7,21 @@
             "type": "string",
             "description": "Module to use to generate the environment variable",
             "default": "src/environments/environment.build"
+        },
+        "dotenvConfigOptions": {
+            "type": "object",
+            "description": "This is a DotenvConfigOption based on package @types/dotenv",
+            "default": {}
+        },
+        "model": {
+            "type": "string",
+            "description": "The model used as environment check. Typically named Environment",
+            "default": null
+        },
+        "modelPath": {
+            "type": "string",
+            "description": "This is the path of the model for the environment. Typically app/environments/model",
+            "default": null
         }
     }
 }

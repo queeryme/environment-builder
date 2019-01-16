@@ -3,10 +3,13 @@ import { getSystemPath } from '@angular-devkit/core';
 import { Observable, of } from 'rxjs';
 import * as ts from 'typescript';
 import { CompilerOptions, Diagnostic, ModuleKind, ModuleResolutionKind, ScriptTarget } from 'typescript';
-import { IEnvironmentSchema } from './schema';
+import { IEnvironmentModule, IEnvironmentSchema } from './schema';
+import * as json5 from 'json5';
+import * as ejs from 'ejs';
 
 // noinspection JSUnusedGlobalSymbols
-export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
+export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
+    // TODO: make compilerOptions configurable
     private readonly compilerOptions: CompilerOptions = {
         moduleResolution: ModuleResolutionKind.NodeJs,
         module: ModuleKind.CommonJS,
@@ -26,16 +29,29 @@ export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
     };
 
     // noinspection JSUnusedGlobalSymbols
-    constructor(private context: BuilderContext) {}
+    constructor(private context: BuilderContext) {
+    }
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
-        const { src } = builderConfig.options as IEnvironmentSchema;
+        const { src, dotenvConfigOptions, model, modelPath } = builderConfig.options;
+        require('dotenv').config(dotenvConfigOptions);
+
         const srcFile = `${getSystemPath(root)}/${src}.ts`;
         this.compile([srcFile], this.compilerOptions);
 
         const srcModule = `${getSystemPath(root)}/${src}`;
-        const srcRequired = require(srcModule);
+        const environment = EnvironmentBuilder.load(srcModule);
+
+        const options = {
+            quote: '\'',
+            space: 4,
+        };
+        const outputJson = json5.stringify(environment, options);
+        const data = { model, modelPath, environment: outputJson };
+        const renderPromise = ejs.renderFile('./src/environment.ts.ejs', data, (error, str) => {
+            console.log('Value is', str);
+        });
 
         // const writeFileObservable = bindNodeCallback(writeFile);
         // return writeFileObservable(timestampFileName, 'Hello world!').pipe(
@@ -49,10 +65,24 @@ export default class TimestampBuilder implements Builder<IEnvironmentSchema> {
         return of({ success: false });
     }
 
+    private static load(srcModule: string): object {
+        let srcRequired: IEnvironmentModule;
+        try {
+            srcRequired = require(srcModule);
+            if (!srcRequired.environment) {
+                return {};
+            }
+        } catch (e) {
+            return {};
+        }
+        return srcRequired.environment;
+    }
+
     /**
+     * @param fileNames - a list of files that ends with a `ts` to compile
+     * @param options - Options used to compile the ts files
+     * @see CompilerOptions
      * @see https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
-     * @param fileNames
-     * @param options
      */
     private compile(fileNames: string[], options: CompilerOptions): void {
         const program = ts.createProgram(fileNames, options);
