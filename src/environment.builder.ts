@@ -1,14 +1,28 @@
 import { Builder, BuilderConfiguration, BuilderContext, BuildEvent } from '@angular-devkit/architect';
 import { getSystemPath } from '@angular-devkit/core';
+import * as ejs from 'ejs';
+import * as json5 from 'json5';
 import { Observable, of } from 'rxjs';
 import * as ts from 'typescript';
 import { CompilerOptions, Diagnostic, ModuleKind, ModuleResolutionKind, ScriptTarget } from 'typescript';
 import { IEnvironmentModule, IEnvironmentSchema } from './schema';
-import * as json5 from 'json5';
-import * as ejs from 'ejs';
 
 // noinspection JSUnusedGlobalSymbols
 export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
+
+    private static load(srcModule: string): object {
+        let srcRequired: IEnvironmentModule;
+        try {
+            srcRequired = require(srcModule);
+            if (!srcRequired.environment) {
+                return {};
+            }
+        } catch (e) {
+            return {};
+        }
+        return srcRequired.environment;
+    }
+
     // TODO: make compilerOptions configurable
     private readonly compilerOptions: CompilerOptions = {
         moduleResolution: ModuleResolutionKind.NodeJs,
@@ -63,19 +77,6 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         //     }),
         // );
         return of({ success: false });
-    }
-
-    private static load(srcModule: string): object {
-        let srcRequired: IEnvironmentModule;
-        try {
-            srcRequired = require(srcModule);
-            if (!srcRequired.environment) {
-                return {};
-            }
-        } catch (e) {
-            return {};
-        }
-        return srcRequired.environment;
     }
 
     /**
