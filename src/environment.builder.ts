@@ -2,6 +2,7 @@ import { Builder, BuilderConfiguration, BuilderContext, BuildEvent } from '@angu
 import { getSystemPath } from '@angular-devkit/core';
 import * as ejs from 'ejs';
 import * as json5 from 'json5';
+import * as path from 'path';
 import { Observable, of } from 'rxjs';
 import * as ts from 'typescript';
 import { CompilerOptions, Diagnostic, ModuleKind, ModuleResolutionKind, ScriptTarget } from 'typescript';
@@ -61,7 +62,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         };
         const outputJson = json5.stringify(environment, options);
         const data = { model, modelPath, environment: outputJson };
-        const renderPromise = ejs.renderFile('src/environment.ts.ejs', data, (error, str) => {
+        const renderPromise = ejs.renderFile(path.join(__dirname, 'environment.ts.ejs'), data, (error, str) => {
             console.log('Error is', error);
             console.log('Str is', str);
         });
