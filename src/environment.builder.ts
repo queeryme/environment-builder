@@ -1,6 +1,7 @@
 import { Builder, BuilderConfiguration, BuilderContext, BuildEvent } from '@angular-devkit/architect';
 import { getSystemPath } from '@angular-devkit/core';
 import * as ejs from 'ejs';
+import { writeFile } from 'fs';
 import * as json5 from 'json5';
 import * as path from 'path';
 import { bindNodeCallback, from, Observable, of } from 'rxjs';
@@ -8,7 +9,6 @@ import { catchError, flatMap, map } from 'rxjs/operators';
 import * as ts from 'typescript';
 import { CompilerOptions, Diagnostic, ModuleKind, ModuleResolutionKind, ScriptTarget } from 'typescript';
 import { IEnvironmentModule, IEnvironmentSchema } from './schema';
-import { writeFile } from 'fs';
 
 // noinspection JSUnusedGlobalSymbols
 export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
