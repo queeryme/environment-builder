@@ -3,7 +3,8 @@ import { getSystemPath } from '@angular-devkit/core';
 import * as ejs from 'ejs';
 import * as json5 from 'json5';
 import * as path from 'path';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 import * as ts from 'typescript';
 import { CompilerOptions, Diagnostic, ModuleKind, ModuleResolutionKind, ScriptTarget } from 'typescript';
 import { IEnvironmentModule, IEnvironmentSchema } from './schema';
@@ -43,7 +44,8 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
     };
 
     // noinspection JSUnusedGlobalSymbols
-    constructor(private context: BuilderContext) {}
+    constructor(private context: BuilderContext) {
+    }
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
@@ -57,7 +59,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         const environment = EnvironmentBuilder.load(srcModule);
 
         const options = {
-            quote: "'",
+            quote: '\'',
             space: 4,
         };
         const outputJson = json5.stringify(environment, options);
@@ -66,11 +68,14 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         if (!templateToUse) {
             templateToUse = path.join(__dirname, 'environment.ts.ejs');
         }
-        const renderPromise = ejs.renderFile(templateToUse, data, (error, str) => {
-            console.log('Error is', error);
-            console.log('Str is', str);
-        });
-
+        const renderObservable = from(ejs.renderFile(templateToUse, data));
+        return renderObservable.pipe(
+            flatMap((value1, value2) => {
+                console.log('Value1 is: ', value1);
+                console.log('Value2 is:', value2);
+                return of({ success: false });
+            }),
+        );
         // const writeFileObservable = bindNodeCallback(writeFile);
         // return writeFileObservable(timestampFileName, 'Hello world!').pipe(
         //     map(() => ({ success: true })),
@@ -80,7 +85,6 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         //         return of({ success: false });
         //     }),
         // );
-        return of({ success: false });
     }
 
     /**
