@@ -2,11 +2,11 @@
 if (model && modelPath) {
 %>
 import { <%= model %> } from '<%= modelPath %>';
-const environment: <%= model %> = <%= environment %>;
+export const environment: <%= model %> = <%= environment %>;
 <%
 } else {
 %>
-const environment = <%= environment %>;
+export const environment = <%= environment %>;
 <%
 }
 %>

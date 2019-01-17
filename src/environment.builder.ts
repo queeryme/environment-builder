@@ -47,7 +47,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
-        const { src, dotenvConfigOptions, model, modelPath } = builderConfig.options;
+        const { src, dotenvConfigOptions, model, modelPath, template } = builderConfig.options;
         require('dotenv').config(dotenvConfigOptions);
 
         const srcFile = `${getSystemPath(root)}/${src}.ts`;
@@ -62,7 +62,11 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         };
         const outputJson = json5.stringify(environment, options);
         const data = { model, modelPath, environment: outputJson };
-        const renderPromise = ejs.renderFile(path.join(__dirname, 'environment.ts.ejs'), data, (error, str) => {
+        let templateToUse = template;
+        if (!templateToUse) {
+            templateToUse = path.join(__dirname, 'environment.ts.ejs')
+        }
+        const renderPromise = ejs.renderFile(templateToUse, data, (error, str) => {
             console.log('Error is', error);
             console.log('Str is', str);
         });

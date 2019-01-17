@@ -5,6 +5,7 @@ export interface IEnvironmentSchema {
     dotenvConfigOptions: DotenvConfigOptions;
     model: string;
     modelPath: string;
+    template: string;
 }
 
 export interface IEnvironmentModule {

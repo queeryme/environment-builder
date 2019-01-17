@@ -22,6 +22,11 @@
             "type": "string",
             "description": "This is the path of the model for the environment. Typically app/environments/model",
             "default": null
+        },
+        "template": {
+            "type": "string",
+            "description": "This is the template file to use to render the environment.",
+            "default": null
         }
     }
 }
