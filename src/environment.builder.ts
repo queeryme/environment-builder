@@ -45,8 +45,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
     };
 
     // noinspection JSUnusedGlobalSymbols
-    constructor(private context: BuilderContext) {
-    }
+    constructor(private context: BuilderContext) {}
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
@@ -60,7 +59,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         const environment = EnvironmentBuilder.load(srcModule);
 
         const options = {
-            quote: '\'',
+            quote: "'",
             space: 4,
         };
         const outputJson = json5.stringify(environment, options);
