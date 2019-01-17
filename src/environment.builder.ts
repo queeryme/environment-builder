@@ -3,11 +3,12 @@ import { getSystemPath } from '@angular-devkit/core';
 import * as ejs from 'ejs';
 import * as json5 from 'json5';
 import * as path from 'path';
-import { from, Observable, of } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { bindNodeCallback, from, Observable, of } from 'rxjs';
+import { catchError, flatMap, map } from 'rxjs/operators';
 import * as ts from 'typescript';
 import { CompilerOptions, Diagnostic, ModuleKind, ModuleResolutionKind, ScriptTarget } from 'typescript';
 import { IEnvironmentModule, IEnvironmentSchema } from './schema';
+import { writeFile } from 'fs';
 
 // noinspection JSUnusedGlobalSymbols
 export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
@@ -44,11 +45,12 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
     };
 
     // noinspection JSUnusedGlobalSymbols
-    constructor(private context: BuilderContext) {}
+    constructor(private context: BuilderContext) {
+    }
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
-        const { src, dotenvConfigOptions, model, modelPath, template } = builderConfig.options;
+        const { src, dotenvConfigOptions, model, modelPath, template, output } = builderConfig.options;
         require('dotenv').config(dotenvConfigOptions);
 
         const srcFile = `${getSystemPath(root)}/${src}.ts`;
@@ -58,7 +60,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         const environment = EnvironmentBuilder.load(srcModule);
 
         const options = {
-            quote: "'",
+            quote: '\'',
             space: 4,
         };
         const outputJson = json5.stringify(environment, options);
@@ -69,21 +71,18 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         }
         const renderObservable = from(ejs.renderFile(templateToUse, data));
         return renderObservable.pipe(
-            flatMap((value1, value2) => {
-                console.log('Value1 is: ', value1);
-                console.log('Value2 is:', value2);
-                return of({ success: false });
+            flatMap((renderedString, error) => {
+                if (error || !output) {
+                    return of({ success: false });
+                }
+                const outputFile = `${getSystemPath(root)}/${output}`;
+                const writeFileObservable = bindNodeCallback(writeFile);
+                return writeFileObservable(outputFile, renderedString).pipe(
+                    map(() => ({ success: true })),
+                    catchError(() => of({ success: false })),
+                );
             }),
         );
-        // const writeFileObservable = bindNodeCallback(writeFile);
-        // return writeFileObservable(timestampFileName, 'Hello world!').pipe(
-        //     map(() => ({ success: true })),
-        //     tap(() => this.context.logger.info('Hello world created')),
-        //     catchError(e => {
-        //         this.context.logger.error('Failed to create hello world', e);
-        //         return of({ success: false });
-        //     }),
-        // );
     }
 
     /**
