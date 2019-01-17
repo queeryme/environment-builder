@@ -64,7 +64,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         const data = { model, modelPath, environment: outputJson };
         let templateToUse = template;
         if (!templateToUse) {
-            templateToUse = path.join(__dirname, 'environment.ts.ejs')
+            templateToUse = path.join(__dirname, 'environment.ts.ejs');
         }
         const renderPromise = ejs.renderFile(templateToUse, data, (error, str) => {
             console.log('Error is', error);
