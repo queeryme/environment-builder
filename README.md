@@ -1,7 +1,7 @@
 # Environment builder for Angular build facade
-[![npm version](https://img.shields.io/npm/v/@flatxph/environment.svg) ![npm](https://img.shields.io/npm/dm/@flatxph/environment.svg)](https://www.npmjs.com/package/@flatxph/environment)  
-
 This builder converts the dotenv to its equivalent environment.ts that can be used by the angular cli
+
+[![npm version](https://img.shields.io/npm/v/@flatxph/environment.svg) ![npm](https://img.shields.io/npm/dm/@flatxph/environment.svg)](https://www.npmjs.com/package/@flatxph/environment)  
 
 This builder followed and improved on [Angular CLI 6 under the hood — builders demystified](https://medium.com/@meltedspark/angular-cli-6-under-the-hood-builders-demystified-f0690ebcf01).
 This also follows [Step by step: Building and publishing an NPM Typescript package.](https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c)
@@ -58,3 +58,5 @@ This also follows [Step by step: Building and publishing an NPM Typescript packa
 
 If you want to create your own builder like this, to upload to npm, run `yarn public` to publish.
 
+Sample Projects are provided in the `examples` directory.
+* Minimal - this is a minimal setup of an angular project with the builder installed.
