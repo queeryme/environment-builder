@@ -46,9 +46,9 @@
     },
     "builders": "./src/builders.json",
     "files": [
-        "./src/*.js",
-        "./src/*.d.ts",
-        "./src/*.json",
-        "./src/*.ts.ejs"
+        "src/*.js",
+        "src/*.d.ts",
+        "src/*.json",
+        "src/*.ts.ejs"
     ]
 }
