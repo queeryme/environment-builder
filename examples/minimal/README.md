@@ -1,5 +1,31 @@
 # Minimal
 
+Copy `.env.sample` to `.env` to allow dotenv configuration.
+
+The following changes are made for minimal setup:
+1. Run `yarn add --dev @types/node dotenv @types/dotenv` to install required dependencies
+2. Run `yarn add @flatxph/environment` to install the Environment Builder
+3. Added file `src/environments/environment.build.ts`
+4. Added architect on `angular.json`
+    ```
+    ...
+          "architect": {
+            "environment": {
+              "builder": "@flatxph/environment:file",
+              "options": {
+              }
+    ...
+    ```
+5. Excluded `environment.build.ts` on `src/tsconfig.app.json`
+    ```
+      "exclude": [
+        "test.ts",
+        "**/*.spec.ts",
+        // Added this part to ignore environment.build.ts due to missing "process" error on build
+        "**/environment.build.ts"
+      ]
+    ```
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.2.
 
 ## Development server

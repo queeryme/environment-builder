@@ -283,10 +283,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@flatxph/environment@^0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@flatxph/environment/-/environment-0.0.16.tgz#89caeeea41d219185c8be38c6bab016d9bf880d9"
-  integrity sha512-a7tRB+Z8nvzKYVVJsA5OAqrLCbA1f8f5rTs69LzEFbuhvg5c/Y1WRRfKqpRpZNKg+HwlVFqQ/zYyKAVOg0BWyg==
+"@flatxph/environment@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@flatxph/environment/-/environment-0.0.17.tgz#eb44fb5b0634eefbf8cdb646cca54a2fe4cf6554"
+  integrity sha512-RQsv7enElxUkAvVPtZ2X4lYHNgF58b9+PdTcdZBSia5Je5eXque/TO+iX4R0/5r4bp7yZOF2zjyEaeXBT7+q0A==
 
 "@ngtools/webpack@7.2.2":
   version "7.2.2"
