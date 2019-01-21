@@ -50,6 +50,15 @@ This also follows [Step by step: Building and publishing an NPM Typescript packa
         /src/environments/*.js
         /src/environments/*.js.map
         ```
+  6. Create a run script on `package.json` to automate the process
+        ```
+        "scripts" {
+        ...
+        "environment": "ng run [relevant-project]:environment",
+        "prestart": "npm environment",
+        ...
+        }
+        ```
 
 ## Options
 
