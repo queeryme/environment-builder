@@ -36,7 +36,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
     private static render(environment: object, model?: string, modelPath?: string, template?: string): Promise<string> {
         // TODO: make json5 options configurable
         const options = {
-            quote: '\'',
+            quote: "'",
             space: 4,
         };
         const outputJson = json5.stringify(environment, options);
@@ -68,8 +68,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
     };
 
     // noinspection JSUnusedGlobalSymbols
-    constructor(private context: BuilderContext) {
-    }
+    constructor(private context: BuilderContext) {}
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
