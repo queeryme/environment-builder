@@ -43,7 +43,13 @@ This also follows [Step by step: Building and publishing an NPM Typescript packa
         };
         ```
   4. Run: `ng run [relevant-project]:environment`
-     Where _[relevant-project]_ is the project to which you've added the target 
+     Where _[relevant-project]_ is the project to which you've added the target
+  5. Add the generated files to `.gitignore` for cleaner repository
+        ```
+        ...
+        /src/environments/*.js
+        /src/environments/*.js.map
+        ```
 
 ## Options
 

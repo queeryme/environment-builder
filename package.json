@@ -1,7 +1,10 @@
 {
     "name": "@flatxph/environment",
     "version": "0.0.22",
-    "repository": "git@github.com:queeryme/environment-builder.git",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:queeryme/environment-builder.git"
+    },
     "author": "Rodney Pantonial <rodney.pantonial@gmail.com>",
     "license": "MIT",
     "keywords": [
