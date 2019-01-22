@@ -3,7 +3,7 @@
     "version": "0.0.23",
     "repository": {
         "type": "git",
-        "url": "git@github.com:queeryme/environment-builder.git"
+        "url": "https://github.com/queeryme/environment-builder"
     },
     "author": "Rodney Pantonial <rodney.pantonial@gmail.com>",
     "license": "MIT",
