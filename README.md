@@ -1,5 +1,11 @@
 # Environment builder for Angular build facade
-This builder converts the dotenv to its equivalent environment.ts that can be used by the angular cli
+This builder converts the dotenv to its equivalent environment.ts that can be used by the angular cli.
+
+This is useful in production and infrastructure builds of AWS ECS/EKS and Google Kubernetes where the environment variables
+determine the built image result and lessens maintenance of different builds due to Container managing the variables for 
+the builds themselves.
+
+This can also 
 
 [![npm version](https://img.shields.io/npm/v/@flatxph/environment.svg) ![npm](https://img.shields.io/npm/dm/@flatxph/environment.svg)](https://www.npmjs.com/package/@flatxph/environment)  
 
@@ -59,6 +65,8 @@ This also follows [Step by step: Building and publishing an NPM Typescript packa
         ...
         }
         ```
+  7. For Local Development, add a `.env` file to the root directory to add custom environment variables.
+  For Live Deployment, please use the actual environment variables instead or add a custom file to the build steps.
 
 ## Options
 
