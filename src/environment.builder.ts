@@ -33,14 +33,14 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         return srcRequired.environment;
     }
 
-    private static render(environment: object, model?: string, modelPath?: string, template?: string): Promise<string> {
+    private static render(environment: object, model?: string, modelPath?: string, template?: string, templateVariables?: object): Promise<string> {
         // TODO: make json5 options configurable
         const options = {
             quote: "'",
             space: 4,
         };
         const outputJson = json5.stringify(environment, options);
-        const data = { model, modelPath, environment: outputJson };
+        const data = { ...templateVariables, model, modelPath, environment: outputJson };
         let templateToUse = template;
         if (!templateToUse) {
             templateToUse = path.join(__dirname, DEFAULT_TEMPLATE);
@@ -72,7 +72,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
 
     public run(builderConfig: BuilderConfiguration<Partial<IEnvironmentSchema>>): Observable<BuildEvent> {
         const root = this.context.workspace.root;
-        const { src, dotenvConfigOptions, model, modelPath, template, output } = builderConfig.options;
+        const { src, dotenvConfigOptions, model, modelPath, template, templateVariables, output } = builderConfig.options;
 
         // This allows a .dotenv file to configure the environment
         require('dotenv').config(dotenvConfigOptions);
@@ -83,7 +83,7 @@ export default class EnvironmentBuilder implements Builder<IEnvironmentSchema> {
         const srcModule = `${getSystemPath(root)}/${src}`;
         const environment = EnvironmentBuilder.load(srcModule);
 
-        const renderPromise = EnvironmentBuilder.render(environment, model, modelPath, template);
+        const renderPromise = EnvironmentBuilder.render(environment, model, modelPath, template, templateVariables);
         const renderObservable = from<string>(renderPromise);
 
         return renderObservable.pipe(

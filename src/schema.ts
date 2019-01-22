@@ -7,6 +7,7 @@ export interface IEnvironmentSchema {
     modelPath: string;
     template: string;
     output: string;
+    templateVariables: object;
 }
 
 export interface IEnvironmentModule {

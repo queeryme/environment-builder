@@ -67,6 +67,7 @@ This also follows [Step by step: Building and publishing an NPM Typescript packa
  - `model` - The model used as environment check. Typically named `Environment`. Defaults to `null`
  - `modelPath` - This is the path of the model for the environment. Typically `app/environments/model`. Defaults to `null`
  - `template` - This is the template file to use to render the environment. Defaults to `null`
+ - `templateVariables` - These are custom variables that can be used in the template. Defaults to `{}`.
  - `output` - This is the output file. Default to `src/environments/environment.ts`
 
 ## Development

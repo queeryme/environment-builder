@@ -28,6 +28,11 @@
             "description": "This is the template file to use to render the environment.",
             "default": null
         },
+        "templateVariables": {
+            "type": "object",
+            "description": "These are custom variables that can be used in the template.",
+            "default": {}
+        },
         "output": {
             "type": "string",
             "description": "This is the output file.",
